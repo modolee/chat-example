@@ -21,21 +21,41 @@
         <script src="/socket.io/socket.io.js"></script>
         <script>
 
-            const socket = io();
-            const formElement = document.getElementById('chatForm');
-            const inputElement = document.getElementById('myMessage');
-            const messagesElement = document.getElementById('messages');
+            let myName;
+            while (myName === undefined || myName === null) {
+                myName = prompt('Please enter your name');
+            }
 
-            formElement.addEventListener('submit', (e) => {
+            const socket = io();
+            const chatForm = document.getElementById('chatForm');
+            const myMessage = document.getElementById('myMessage');
+            const messages = document.getElementById('messages');
+
+            chatForm.addEventListener('submit', (e) => {
                 e.preventDefault();
 
-                socket.emit('chat message', inputElement.value);
-                inputElement.value = '';
+                socket.emit('chat message', {'name': myName, 'msg': myMessage.value});
+                myMessage.value = '';
                 return false;
             });
 
-            socket.on('chat message', (msg) => {
-                messagesElement.innerHTML = messagesElement.innerHTML + '<li>'+ msg +'</li>'
+            socket.on('connect', () => {
+                socket.emit('enter msg', myName);
+            });
+
+            socket.on('disconnect', () => {
+            });
+
+            socket.on('enter msg', (name) => {
+                messages.innerHTML = messages.innerHTML + '<li>'+ name +'님이 입장 하셨습니다.</li>'
+            });
+
+            socket.on('exit msg', (name) => {
+                messages.innerHTML = messages.innerHTML + '<li>'+ name +'님이 퇴장 하셨습니다.</li>'
+            });
+
+            socket.on('chat message', (name, msg) => {
+                messages.innerHTML = messages.innerHTML + '<li>'+ name + ' : ' + msg +'</li>'
             });
 
         </script>

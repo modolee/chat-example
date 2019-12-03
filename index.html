@@ -16,14 +16,15 @@
     <body>
         <ul id="messages"></ul>
         <form id="chatForm" action="">
-            <input id="message" autocomplete="off" /><button>Send</button>
+            <input id="myMessage" autocomplete="off" /><button>Send</button>
         </form>
         <script src="/socket.io/socket.io.js"></script>
         <script>
 
             const socket = io();
             const formElement = document.getElementById('chatForm');
-            const inputElement = document.getElementById('message');
+            const inputElement = document.getElementById('myMessage');
+            const messagesElement = document.getElementById('messages');
 
             formElement.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -31,6 +32,10 @@
                 socket.emit('chat message', inputElement.value);
                 inputElement.value = '';
                 return false;
+            });
+
+            socket.on('chat message', (msg) => {
+                messagesElement.innerHTML = messagesElement.innerHTML + '<li>'+ msg +'</li>'
             });
 
         </script>

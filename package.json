@@ -2,7 +2,12 @@
   "name": "socket-chat-example",
   "version": "0.0.1",
   "description": "my first socket.io app",
-  "devDependencies": {},
+  "repository": "https://github.com/modolee/chat-example",
+  "devDependencies": {
+    "debug": ">=2.6.9",
+    "fresh": ">=0.5.2",
+    "mime": ">=1.4.1"
+  },
   "dependencies": {
     "express": "^4.15.2"
   }

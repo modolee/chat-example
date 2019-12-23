@@ -10,11 +10,11 @@ io.on('connection', (socket) => {
 
    socket.on('enter msg', (name) => {
       socket.userName = name;
-      io.emit('enter msg', name);
+      socket.broadcast.emit('enter msg', name);
    });
 
    socket.on('disconnect', () => {
-      io.emit('exit msg', socket.userName);
+      socket.broadcast.emit('exit msg', socket.userName);
    });
 
    socket.on('chat message', (data) => {
